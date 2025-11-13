@@ -19,7 +19,7 @@ export function useVestingContract() {
       address: VESTING_CONTRACT_ADDRESS,
       abi: VESTING_SCHEDULER_ABI,
       functionName: 'createVesting',
-      args: [beneficiary, token, totalAmount, startTime, cliffDuration, duration, revocable],
+      args: [beneficiary as `0x${string}`, token as `0x${string}`, totalAmount, startTime, cliffDuration, duration, revocable],
     });
   };
 
@@ -36,7 +36,7 @@ export function useVestingContract() {
       address: VESTING_CONTRACT_ADDRESS,
       abi: VESTING_SCHEDULER_ABI,
       functionName: 'createBatchVesting',
-      args: [beneficiaries, tokens, amounts, startTimes, cliffDurations, durations, revocables],
+      args: [beneficiaries as `0x${string}`[], tokens as `0x${string}`[], amounts, startTimes, cliffDurations, durations, revocables],
     });
   };
 
