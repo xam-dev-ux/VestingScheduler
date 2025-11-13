@@ -1,8 +1,8 @@
 {
   "accountAssociation": {
-    "header": "eyJmaWQiOjEsInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHgxMjM0NTY3ODkwYWJjZGVmIn0",
-    "payload": "eyJkb21haW4iOiJ2ZXN0aW5nLXNjaGVkdWxlci52ZXJjZWwuYXBwIn0",
-    "signature": "MHhhYmNkZWYxMjM0NTY3ODkw"
+    "header": "eyJmaWQiOjU4MDczOCwidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweDEwOUM5ZTgwMTNFY2U4ODZENGY4QUUyNjkyNTRkZTkzMEFFZmNkNDQifQ",
+    "payload": "eyJkb21haW4iOiJiYXNlYXBwNC52ZXJjZWwuYXBwIn0",
+    "signature": "WurAdrwyTxBAb8KaijHMHdaC2RMYx7hutrMojo0Zp4MD3q9lnUrVdkgBu0+BhcMvgOjX7U15KOn7Ky0iCCHqphs="
   },
   "frame": {
     "version": "next",
@@ -69,5 +69,8 @@
     "documentation": "https://github.com/xam-dev-ux/VestingScheduler",
     "support": "https://github.com/xam-dev-ux/VestingScheduler/issues",
     "contract": "https://basescan.org/address/0x9b20c6823408cd9036786D0B4C80af4Eb7caB5e5"
+  },
+  "baseBuilder": {
+    "ownerAddress": "0xB3e4Eb6dC22540128Ce2D5C13C213D9d9EAaFa38"
   }
 }
