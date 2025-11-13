@@ -4,6 +4,7 @@ import { Header } from '@/components/Header';
 import { CreateVestingForm } from '@/components/CreateVestingForm';
 import { BatchVestingUpload } from '@/components/BatchVestingUpload';
 import { VestingDashboard } from '@/components/VestingDashboard';
+import { AdminPanel } from '@/components/AdminPanel';
 import { Onboarding, useOnboarding } from '@/components/Onboarding';
 import { useState } from 'react';
 import { useFeePercentage } from '@/lib/hooks/useVestingContract';
@@ -213,6 +214,11 @@ export default function Home() {
                 <p className="text-xs text-gray-400">Fast & Low Cost</p>
               </div>
             </div>
+          </div>
+
+          {/* Admin Panel - Only visible for owner */}
+          <div className="animate-slideUp mb-12" style={{ animationDelay: '0.15s' }}>
+            <AdminPanel />
           </div>
 
           {/* Dashboard Section */}

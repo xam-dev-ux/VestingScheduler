@@ -174,6 +174,41 @@ export const VESTING_SCHEDULER_ABI = [
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "feeCollector",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "token", "type": "address" }],
+    "name": "accumulatedFees",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "token", "type": "address" }],
+    "name": "withdrawFees",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "newFeePercentage", "type": "uint256" }],
+    "name": "setFeePercentage",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "newFeeCollector", "type": "address" }],
+    "name": "setFeeCollector",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   }
 ] as const;
 
