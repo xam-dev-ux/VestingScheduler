@@ -6,14 +6,14 @@
   },
   "frame": {
     "version": "next",
-    "imageUrl": "https://your-app.vercel.app/og-image.png",
+    "imageUrl": "https://baseapp4.vercel.app/og-image.png",
     "button": {
       "title": "Launch Vesting Scheduler",
       "action": {
         "type": "launch_frame",
         "name": "Vesting Scheduler",
-        "url": "https://your-app.vercel.app",
-        "splashImageUrl": "https://your-app.vercel.app/splash.png",
+        "url": "https://baseapp4.vercel.app",
+        "splashImageUrl": "https://baseapp4.vercel.app/splash.png",
         "splashBackgroundColor": "#3b82f6"
       }
     }
@@ -21,18 +21,18 @@
   "miniApp": {
     "name": "Vesting Scheduler",
     "description": "Create and manage token vesting schedules on Base Network with customizable parameters, batch CSV upload, and real-time tracking",
-    "icon": "https://your-app.vercel.app/icon.png",
-    "homeUrl": "https://your-app.vercel.app",
-    "manifestUrl": "https://your-app.vercel.app/farcaster.json",
+    "icon": "https://baseapp4.vercel.app/icon.png",
+    "homeUrl": "https://baseapp4.vercel.app",
+    "manifestUrl": "https://baseapp4.vercel.app/farcaster.json",
     "version": "1.0.0",
     "author": {
       "name": "Vesting Scheduler Team",
-      "url": "https://your-app.vercel.app"
+      "url": "https://baseapp4.vercel.app"
     },
     "screenshots": [
-      "https://your-app.vercel.app/screenshot-1.png",
-      "https://your-app.vercel.app/screenshot-2.png",
-      "https://your-app.vercel.app/screenshot-3.png"
+      "https://baseapp4.vercel.app/screenshot-1.png",
+      "https://baseapp4.vercel.app/screenshot-2.png",
+      "https://baseapp4.vercel.app/screenshot-3.png"
     ],
     "categories": ["defi", "tools", "finance"],
     "tags": ["vesting", "tokens", "base", "defi", "schedule"],
@@ -59,8 +59,8 @@
   "metadata": {
     "title": "Vesting Scheduler - Token Vesting on Base",
     "description": "Create customizable token vesting schedules on Base Network with individual or batch creation. Support for cliff periods, linear vesting, and real-time tracking.",
-    "image": "https://your-app.vercel.app/og-image.png",
-    "url": "https://your-app.vercel.app",
+    "image": "https://baseapp4.vercel.app/og-image.png",
+    "url": "https://baseapp4.vercel.app",
     "type": "website",
     "locale": "en_US",
     "siteName": "Vesting Scheduler"
