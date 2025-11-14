@@ -1,18 +1,6 @@
 'use client';
 
-import {
-  ConnectWallet,
-  Wallet,
-  WalletDropdown,
-  WalletDropdownDisconnect,
-} from '@coinbase/onchainkit/wallet';
-import {
-  Address,
-  Avatar,
-  Name,
-  Identity,
-  EthBalance,
-} from '@coinbase/onchainkit/identity';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 interface HeaderProps {
   onShowOnboarding?: () => void;
@@ -52,21 +40,7 @@ export function Header({ onShowOnboarding }: HeaderProps) {
               </button>
             )}
 
-            <Wallet>
-              <ConnectWallet className="!bg-gradient-to-r !from-blue-600 !to-purple-600 hover:!from-blue-700 hover:!to-purple-700 !rounded-xl !shadow-lg hover:!shadow-xl !transition-all !duration-200">
-                <Avatar className="h-6 w-6" />
-                <Name />
-              </ConnectWallet>
-              <WalletDropdown className="!rounded-xl !shadow-2xl !border-gray-200 dark:!border-gray-800">
-                <Identity className="px-4 pt-3 pb-2" hasCopyAddressOnClick>
-                  <Avatar />
-                  <Name />
-                  <Address />
-                  <EthBalance />
-                </Identity>
-                <WalletDropdownDisconnect />
-              </WalletDropdown>
-            </Wallet>
+            <ConnectButton />
           </div>
         </div>
       </div>
