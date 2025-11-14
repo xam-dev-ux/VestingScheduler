@@ -1,0 +1,45 @@
+{
+  "accountAssociation": {
+    "header": "eyJmaWQiOjEsInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHgxMjM0NTY3ODkwYWJjZGVmIn0",
+    "payload": "eyJkb21haW4iOiJ2ZXN0aW5nLXNjaGVkdWxlci52ZXJjZWwuYXBwIn0",
+    "signature": "MHhhYmNkZWYxMjM0NTY3ODkw"
+  },
+  "frame": {
+    "version": "next",
+    "imageUrl": "https://vesting-scheduler.vercel.app/og-image.png",
+    "button": {
+      "title": "Open Vesting Scheduler",
+      "action": {
+        "type": "launch_frame",
+        "name": "Vesting Scheduler",
+        "url": "https://vesting-scheduler.vercel.app",
+        "splashImageUrl": "https://vesting-scheduler.vercel.app/splash.png",
+        "splashBackgroundColor": "#3b82f6"
+      }
+    }
+  },
+  "miniApp": {
+    "name": "Vesting Scheduler",
+    "description": "Create and manage token vesting schedules on Base Network",
+    "icon": "https://vesting-scheduler.vercel.app/icon.png",
+    "homeUrl": "https://vesting-scheduler.vercel.app",
+    "manifestUrl": "https://vesting-scheduler.vercel.app/farcaster.json",
+    "version": "1.0.0",
+    "screenshots": [
+      "https://vesting-scheduler.vercel.app/screenshot-1.png",
+      "https://vesting-scheduler.vercel.app/screenshot-2.png"
+    ],
+    "categories": ["defi", "tools"],
+    "chain": {
+      "id": 8453,
+      "name": "Base",
+      "contractAddress": "0x9b20c6823408cd9036786D0B4C80af4Eb7caB5e5"
+    }
+  },
+  "metadata": {
+    "title": "Vesting Scheduler",
+    "description": "Create customizable token vesting schedules on Base Network with individual or batch creation",
+    "image": "https://vesting-scheduler.vercel.app/og-image.png",
+    "url": "https://vesting-scheduler.vercel.app"
+  }
+}

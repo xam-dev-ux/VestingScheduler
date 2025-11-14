@@ -20,6 +20,13 @@ export function AdminPanel() {
   // Verificar si el usuario es el owner
   const isOwner = address?.toLowerCase() === OWNER_ADDRESS;
 
+  // Leer el owner actual del contrato
+  const { data: contractOwner } = useReadContract({
+    address: VESTING_CONTRACT_ADDRESS,
+    abi: VESTING_SCHEDULER_ABI,
+    functionName: 'owner',
+  });
+
   // Leer fee percentage actual
   const { data: currentFeePercentage } = useReadContract({
     address: VESTING_CONTRACT_ADDRESS,
@@ -100,6 +107,41 @@ export function AdminPanel() {
     }
   };
 
+  const handleRenounceOwnership = async () => {
+    const confirmed = window.confirm(
+      '⚠️ ADVERTENCIA CRÍTICA ⚠️\n\n' +
+      'Estás a punto de RENUNCIAR PERMANENTEMENTE a la propiedad del contrato.\n\n' +
+      'Después de esta acción:\n' +
+      '❌ NO podrás cambiar fees\n' +
+      '❌ NO podrás retirar comisiones\n' +
+      '❌ NO podrás pausar el contrato\n' +
+      '❌ Esta acción es IRREVERSIBLE\n\n' +
+      'Esto se hace para demostrar que el contrato es descentralizado y seguro.\n\n' +
+      '¿Estás ABSOLUTAMENTE SEGURO de que quieres continuar?'
+    );
+
+    if (!confirmed) return;
+
+    const doubleConfirm = window.confirm(
+      '🚨 ÚLTIMA CONFIRMACIÓN 🚨\n\n' +
+      'Escribe "RENUNCIO" en tu mente y haz clic en OK para confirmar.\n\n' +
+      'Esta es tu última oportunidad para cancelar.'
+    );
+
+    if (!doubleConfirm) return;
+
+    try {
+      await writeContract({
+        address: VESTING_CONTRACT_ADDRESS,
+        abi: VESTING_SCHEDULER_ABI,
+        functionName: 'renounceOwnership',
+      });
+    } catch (error) {
+      console.error('Error renouncing ownership:', error);
+      alert('Error al renunciar a la propiedad');
+    }
+  };
+
   // Si no es el owner, no mostrar nada
   if (!isOwner) {
     return null;
@@ -115,7 +157,7 @@ export function AdminPanel() {
       </div>
 
       {/* Información actual */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <div className="bg-white p-4 rounded-xl shadow-md border border-gray-200">
           <h3 className="text-lg font-semibold text-gray-700 mb-2">💰 Fee Actual</h3>
           <p className="text-3xl font-bold text-purple-600">
@@ -131,6 +173,16 @@ export function AdminPanel() {
           <p className="text-sm font-mono text-gray-600 break-all">
             {currentFeeCollector ? currentFeeCollector.toString() : '...'}
           </p>
+        </div>
+
+        <div className="bg-white p-4 rounded-xl shadow-md border border-gray-200">
+          <h3 className="text-lg font-semibold text-gray-700 mb-2">🔐 Contract Owner</h3>
+          <p className="text-sm font-mono text-gray-600 break-all">
+            {contractOwner ? contractOwner.toString() : '...'}
+          </p>
+          {contractOwner?.toLowerCase() === '0x0000000000000000000000000000000000000000' && (
+            <p className="text-xs text-green-600 mt-1 font-semibold">✅ Descentralizado</p>
+          )}
         </div>
       </div>
 
@@ -246,6 +298,48 @@ export function AdminPanel() {
         </div>
       </div>
 
+      {/* Renunciar a la propiedad */}
+      <div className="bg-red-50 border-2 border-red-300 p-6 rounded-xl shadow-md">
+        <h3 className="text-xl font-bold text-red-800 mb-4">⚠️ Renunciar a la Propiedad del Contrato</h3>
+
+        <div className="bg-white p-4 rounded-lg mb-4">
+          <p className="text-sm text-gray-700 mb-3">
+            <strong>¿Por qué hacer esto?</strong> Renunciar a la propiedad demuestra que el contrato es totalmente descentralizado
+            y que nadie puede modificar sus reglas o apropiarse de los fondos.
+          </p>
+          <p className="text-sm text-gray-700 mb-3">
+            <strong>Consecuencias (IRREVERSIBLES):</strong>
+          </p>
+          <ul className="text-sm text-gray-700 space-y-1 ml-4 list-disc">
+            <li>No se podrán cambiar las comisiones nunca más</li>
+            <li>No se podrán retirar las comisiones acumuladas</li>
+            <li>No se podrá pausar/despausar el contrato</li>
+            <li>El contrato quedará completamente autónomo</li>
+            <li>Máxima confianza para los usuarios</li>
+          </ul>
+        </div>
+
+        <button
+          onClick={handleRenounceOwnership}
+          disabled={isPending || isConfirming || contractOwner?.toLowerCase() === '0x0000000000000000000000000000000000000000'}
+          className="w-full bg-gradient-to-r from-red-600 to-red-800 text-white px-6 py-4 rounded-lg font-bold hover:from-red-700 hover:to-red-900 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-lg"
+        >
+          {contractOwner?.toLowerCase() === '0x0000000000000000000000000000000000000000'
+            ? '✅ Ya se ha renunciado a la propiedad'
+            : isPending || isConfirming
+              ? 'Procesando...'
+              : '🚨 RENUNCIAR A LA PROPIEDAD DEL CONTRATO'}
+        </button>
+
+        {contractOwner?.toLowerCase() === '0x0000000000000000000000000000000000000000' && (
+          <div className="mt-4 bg-green-50 border border-green-200 rounded-lg p-4">
+            <p className="text-green-800 font-semibold text-center">
+              ✅ Este contrato ya no tiene dueño. Es completamente descentralizado y seguro.
+            </p>
+          </div>
+        )}
+      </div>
+
       {/* Tokens comunes para consultar */}
       <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
         <p className="text-sm font-semibold text-blue-800 mb-2">📋 Direcciones de tokens comunes en Base:</p>
@@ -254,6 +348,19 @@ export function AdminPanel() {
           <p>USDC: 0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913</p>
           <p>DAI: 0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb</p>
         </div>
+      </div>
+
+      {/* Enlace al contrato verificado */}
+      <div className="mt-6 bg-green-50 border border-green-200 rounded-lg p-4">
+        <p className="text-sm font-semibold text-green-800 mb-2">🔍 Verificación de Seguridad:</p>
+        <a
+          href={`https://basescan.org/address/${VESTING_CONTRACT_ADDRESS}#code`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-sm text-green-700 hover:text-green-900 underline font-mono"
+        >
+          Ver contrato verificado en BaseScan →
+        </a>
       </div>
     </div>
   );
