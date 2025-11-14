@@ -55,19 +55,35 @@ export default function Home() {
                 </div>
               )}
 
-              <a
-                href={`https://basescan.org/address/${process.env.NEXT_PUBLIC_VESTING_CONTRACT_ADDRESS}#code`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-green-50 dark:bg-green-900/20 rounded-xl border border-green-200 dark:border-green-800 hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors"
-              >
-                <svg className="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span className="text-sm font-semibold text-green-700 dark:text-green-400">
-                  Verified Contract
-                </span>
-              </a>
+              <div className="flex flex-col sm:flex-row gap-2">
+                <a
+                  href={`https://basescan.org/address/${process.env.NEXT_PUBLIC_VESTING_CONTRACT_ADDRESS}#code`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-green-50 dark:bg-green-900/20 rounded-xl border border-green-200 dark:border-green-800 hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors"
+                >
+                  <svg className="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  <span className="text-sm font-semibold text-green-700 dark:text-green-400">
+                    Verified Contract
+                  </span>
+                </a>
+
+                <a
+                  href={`https://basescan.org/address/${process.env.NEXT_PUBLIC_VESTING_CONTRACT_ADDRESS}#readContract`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-purple-50 dark:bg-purple-900/20 rounded-xl border-2 border-purple-500 dark:border-purple-600 hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors animate-pulse"
+                >
+                  <svg className="w-4 h-4 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  <span className="text-sm font-bold text-purple-700 dark:text-purple-400">
+                    🔒 Ownership Renounced
+                  </span>
+                </a>
+              </div>
             </div>
           </div>
 
@@ -224,7 +240,7 @@ export default function Home() {
                   <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
-                  Security & Trust
+                  Security & Transparency
                 </h3>
                 <ul className="space-y-3 text-sm">
                   <li className="flex items-start gap-2">
@@ -236,41 +252,57 @@ export default function Home() {
                         href={`https://basescan.org/address/${process.env.NEXT_PUBLIC_VESTING_CONTRACT_ADDRESS}#code`}
                         target="_blank"
                         rel="noopener noreferrer"
+                        className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 underline font-semibold"
+                      >
+                        ✅ Verified Contract
+                      </a>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Audit the source code yourself</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <svg className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <div>
+                      <span className="text-gray-700 dark:text-gray-300 font-semibold">Protected Vestings</span>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Owner cannot steal vested tokens</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <svg className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <div>
+                      <span className="text-gray-700 dark:text-gray-300 font-semibold">Non-upgradeable</span>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Contract logic cannot change</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <svg className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                    </svg>
+                    <div>
+                      <a
+                        href={`https://basescan.org/address/${process.env.NEXT_PUBLIC_VESTING_CONTRACT_ADDRESS}#readContract`}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 underline"
                       >
-                        Verified on BaseScan
+                        Check Current Owner
                       </a>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Auditable source code</p>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <svg className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                    <div>
-                      <span className="text-gray-700 dark:text-gray-300">OpenZeppelin libraries</span>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Battle-tested security</p>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <svg className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                    <div>
-                      <span className="text-gray-700 dark:text-gray-300">Non-custodial</span>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">You control your tokens</p>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <svg className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                    <div>
-                      <span className="text-gray-700 dark:text-gray-300">Immutable logic</span>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">No upgrades or backdoors</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Can adjust fees & pause (not steal)</p>
                     </div>
                   </li>
                 </ul>
+
+                <div className="mt-4 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border-2 border-green-500 dark:border-green-600">
+                  <p className="text-sm font-bold text-green-800 dark:text-green-300 mb-1">
+                    🎉 Ownership Renounced!
+                  </p>
+                  <p className="text-xs text-green-700 dark:text-green-400">
+                    This contract is <strong>100% decentralized</strong>. No one can change fees, pause, or access tokens. <a href={`https://basescan.org/address/${process.env.NEXT_PUBLIC_VESTING_CONTRACT_ADDRESS}#readContract`} target="_blank" rel="noopener noreferrer" className="underline font-semibold">Verify owner = 0x000...000</a>
+                  </p>
+                </div>
               </div>
 
               {/* Stats */}

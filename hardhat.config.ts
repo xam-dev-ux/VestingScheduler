@@ -17,20 +17,17 @@ const config: HardhatUserConfig = {
   networks: {
     base: {
       url: process.env.NEXT_PUBLIC_BASE_RPC_URL || "https://mainnet.base.org",
-      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
+      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : ["0x0000000000000000000000000000000000000000000000000000000000000001"],
       chainId: 8453,
     },
     baseSepolia: {
       url: "https://sepolia.base.org",
-      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
+      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : ["0x0000000000000000000000000000000000000000000000000000000000000001"],
       chainId: 84532,
     },
   },
   etherscan: {
-    apiKey: {
-      base: process.env.BASESCAN_API_KEY || "",
-      baseSepolia: process.env.BASESCAN_API_KEY || "",
-    },
+    apiKey: process.env.BASESCAN_API_KEY || "",
     customChains: [
       {
         network: "base",
@@ -49,6 +46,9 @@ const config: HardhatUserConfig = {
         }
       }
     ]
+  },
+  sourcify: {
+    enabled: false
   },
   paths: {
     sources: "./contracts",
