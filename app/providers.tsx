@@ -1,30 +1,21 @@
 'use client';
 
 import { OnchainKitProvider } from '@coinbase/onchainkit';
-import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { RainbowKitProvider, getDefaultConfig } from '@rainbow-me/rainbowkit';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { base } from 'wagmi/chains';
 import { WagmiProvider } from 'wagmi';
-import { http, createConfig } from 'wagmi';
-import { coinbaseWallet } from 'wagmi/connectors';
 
 import '@coinbase/onchainkit/styles.css';
 import '@rainbow-me/rainbowkit/styles.css';
 
 const queryClient = new QueryClient();
 
-const wagmiConfig = createConfig({
+const wagmiConfig = getDefaultConfig({
+  appName: 'Vesting Scheduler',
+  projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || '',
   chains: [base],
-  connectors: [
-    coinbaseWallet({
-      appName: 'Vesting Scheduler',
-      preference: 'smartWalletOnly',
-    }),
-  ],
   ssr: true,
-  transports: {
-    [base.id]: http(),
-  },
 });
 
 export function Providers({ children }: { children: React.ReactNode }) {
