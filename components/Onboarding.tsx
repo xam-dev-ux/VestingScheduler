@@ -42,10 +42,10 @@ export function Onboarding({ onComplete }: OnboardingProps) {
       content: 'View all your vestings in the dashboard. Beneficiaries can claim tokens as they vest, with real-time progress tracking.'
     },
     {
-      title: 'Platform Fee',
-      description: 'Transparent fee structure',
-      icon: '💰',
-      content: 'A small 2.5% fee is charged on vesting creation. This ensures platform sustainability while keeping costs minimal.'
+      title: 'Fully Decentralized',
+      description: '100% trustless and secure',
+      icon: '🔒',
+      content: 'Contract ownership has been renounced - no one can change fees, pause operations, or access your tokens. Verified on BaseScan for full transparency. Current fee: 2.5% (locked forever).'
     }
   ];
 
@@ -128,7 +128,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
           <div className="flex justify-between items-center gap-4">
             <button
               onClick={handleSkip}
-              className="px-6 py-3 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors font-medium"
+              className="min-h-[44px] min-w-[44px] px-6 py-3 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors font-medium"
             >
               Skip
             </button>
@@ -137,14 +137,14 @@ export function Onboarding({ onComplete }: OnboardingProps) {
               {currentStep > 0 && (
                 <button
                   onClick={() => setCurrentStep(currentStep - 1)}
-                  className="px-6 py-3 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-xl transition-colors font-medium"
+                  className="min-h-[44px] min-w-[44px] px-6 py-3 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-xl transition-colors font-medium"
                 >
                   Back
                 </button>
               )}
               <button
                 onClick={handleNext}
-                className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-xl transition-all font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                className="min-h-[44px] min-w-[44px] px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-xl transition-all font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
               >
                 {currentStep === steps.length - 1 ? "Get Started" : "Next"}
               </button>
