@@ -13,6 +13,16 @@ export const metadata: Metadata = {
   creator: "Vesting Scheduler",
   publisher: "Vesting Scheduler",
   metadataBase: new URL('https://baseapp4-m6r50vtoi-xabiers-projects-c5a11aae.vercel.app'),
+  manifest: '/manifest.json',
+  icons: {
+    icon: [
+      { url: '/icon.png', sizes: '1024x1024', type: 'image/png' },
+      { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/icon.png', sizes: '1024x1024', type: 'image/png' },
+    ],
+  },
   openGraph: {
     title: "Vesting Scheduler - Decentralized Token Vesting",
     description: "Create and manage token vesting schedules on Base Network. 100% decentralized and verified.",
@@ -20,21 +30,38 @@ export const metadata: Metadata = {
     siteName: 'Vesting Scheduler',
     locale: 'en_US',
     type: 'website',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Vesting Scheduler - Token Vesting on Base Network',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Vesting Scheduler - Base Network',
     description: 'Decentralized token vesting platform. Verified contract, ownership renounced.',
-  },
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 5,
+    images: ['/og-image.png'],
   },
   robots: {
     index: true,
     follow: true,
   },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Vesting Scheduler',
+  },
+  applicationName: 'Vesting Scheduler',
+  category: 'finance',
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
 };
 
 export default function RootLayout({

@@ -45,7 +45,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
       title: 'Fully Decentralized',
       description: '100% trustless and secure',
       icon: '🔒',
-      content: 'Contract ownership has been renounced - no one can change fees, pause operations, or access your tokens. Verified on BaseScan for full transparency. Current fee: 2.5% (locked forever).'
+      content: 'Contract ownership has been renounced - no one can change fees, pause operations, or access your tokens. Verified on BaseScan for full transparency. Current fee: 0.5% (locked forever).'
     }
   ];
 
@@ -73,8 +73,8 @@ export function Onboarding({ onComplete }: OnboardingProps) {
   const progress = ((currentStep + 1) / steps.length) * 100;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm animate-fadeIn">
-      <div className="relative w-full max-w-2xl mx-4 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl overflow-hidden animate-slideUp">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm animate-fadeIn p-4 overflow-y-auto">
+      <div className="relative w-full max-w-2xl my-auto bg-white dark:bg-gray-900 rounded-2xl shadow-2xl overflow-hidden animate-slideUp">
         {/* Progress Bar */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-gray-200 dark:bg-gray-800">
           <div
@@ -84,33 +84,33 @@ export function Onboarding({ onComplete }: OnboardingProps) {
         </div>
 
         {/* Content */}
-        <div className="p-8 md:p-12">
+        <div className="p-4 sm:p-6 md:p-12">
           {/* Icon */}
-          <div className="flex justify-center mb-6">
-            <div className="w-20 h-20 flex items-center justify-center text-5xl bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-2xl animate-bounce-slow">
+          <div className="flex justify-center mb-4 sm:mb-6">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center text-4xl sm:text-5xl bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-2xl animate-bounce-slow">
               {step.icon}
             </div>
           </div>
 
           {/* Title */}
-          <h2 className="text-3xl font-bold text-center mb-3 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          <h2 className="text-2xl sm:text-3xl font-bold text-center mb-2 sm:mb-3 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
             {step.title}
           </h2>
 
           {/* Description */}
-          <p className="text-center text-gray-600 dark:text-gray-400 mb-6 text-lg">
+          <p className="text-center text-gray-600 dark:text-gray-400 mb-4 sm:mb-6 text-base sm:text-lg">
             {step.description}
           </p>
 
           {/* Content */}
-          <div className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/10 dark:to-purple-900/10 rounded-xl p-6 mb-8">
-            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+          <div className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/10 dark:to-purple-900/10 rounded-xl p-4 sm:p-6 mb-4 sm:mb-8">
+            <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 leading-relaxed">
               {step.content}
             </p>
           </div>
 
           {/* Step Indicators */}
-          <div className="flex justify-center gap-2 mb-8">
+          <div className="flex justify-center gap-2 mb-4 sm:mb-8">
             {steps.map((_, index) => (
               <button
                 key={index}
@@ -125,26 +125,26 @@ export function Onboarding({ onComplete }: OnboardingProps) {
           </div>
 
           {/* Navigation */}
-          <div className="flex justify-between items-center gap-4">
+          <div className="flex justify-between items-center gap-2 sm:gap-4">
             <button
               onClick={handleSkip}
-              className="min-h-[44px] min-w-[44px] px-6 py-3 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors font-medium"
+              className="min-h-[48px] min-w-[48px] px-4 sm:px-6 py-3 text-sm sm:text-base text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors font-medium touch-manipulation"
             >
               Skip
             </button>
 
-            <div className="flex gap-3">
+            <div className="flex gap-2 sm:gap-3">
               {currentStep > 0 && (
                 <button
                   onClick={() => setCurrentStep(currentStep - 1)}
-                  className="min-h-[44px] min-w-[44px] px-6 py-3 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-xl transition-colors font-medium"
+                  className="min-h-[48px] min-w-[48px] px-4 sm:px-6 py-3 text-sm sm:text-base bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-xl transition-colors font-medium touch-manipulation"
                 >
                   Back
                 </button>
               )}
               <button
                 onClick={handleNext}
-                className="min-h-[44px] min-w-[44px] px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-xl transition-all font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                className="min-h-[48px] min-w-[48px] px-6 sm:px-8 py-3 text-sm sm:text-base bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-xl transition-all font-medium shadow-lg hover:shadow-xl active:scale-95 touch-manipulation"
               >
                 {currentStep === steps.length - 1 ? "Get Started" : "Next"}
               </button>

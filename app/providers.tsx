@@ -26,7 +26,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
           apiKey={process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY}
           chain={base as any}
         >
-          <RainbowKitProvider modalSize="compact">
+          <RainbowKitProvider modalSize="compact" locale="en-US">
             {children}
           </RainbowKitProvider>
         </OnchainKitProvider>

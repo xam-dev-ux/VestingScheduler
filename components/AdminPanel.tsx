@@ -5,7 +5,7 @@ import { useAccount, useReadContract, useWriteContract, useWaitForTransactionRec
 import { formatEther, parseEther } from 'viem';
 import { VESTING_CONTRACT_ADDRESS, VESTING_SCHEDULER_ABI } from '@/lib/contract';
 
-// Dirección del owner/admin del contrato
+// Owner/admin address of the contract
 const OWNER_ADDRESS = '0x8F058fE6b568D97f85d517Ac441b52B95722fDDe'.toLowerCase();
 
 export function AdminPanel() {
@@ -17,31 +17,31 @@ export function AdminPanel() {
   const { writeContract, data: hash, isPending } = useWriteContract();
   const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({ hash });
 
-  // Verificar si el usuario es el owner
+  // Check if user is the owner
   const isOwner = address?.toLowerCase() === OWNER_ADDRESS;
 
-  // Leer el owner actual del contrato
+  // Read current contract owner
   const { data: contractOwner } = useReadContract({
     address: VESTING_CONTRACT_ADDRESS,
     abi: VESTING_SCHEDULER_ABI,
     functionName: 'owner',
   });
 
-  // Leer fee percentage actual
+  // Read current fee percentage
   const { data: currentFeePercentage } = useReadContract({
     address: VESTING_CONTRACT_ADDRESS,
     abi: VESTING_SCHEDULER_ABI,
     functionName: 'feePercentage',
   });
 
-  // Leer fee collector actual
+  // Read current fee collector
   const { data: currentFeeCollector } = useReadContract({
     address: VESTING_CONTRACT_ADDRESS,
     abi: VESTING_SCHEDULER_ABI,
     functionName: 'feeCollector',
   });
 
-  // Leer fees acumulados para un token
+  // Read accumulated fees for a token
   const { data: accumulatedFees, refetch: refetchFees } = useReadContract({
     address: VESTING_CONTRACT_ADDRESS,
     abi: VESTING_SCHEDULER_ABI,
@@ -51,7 +51,7 @@ export function AdminPanel() {
 
   const handleWithdrawFees = async () => {
     if (!tokenAddress) {
-      alert('Por favor ingresa una dirección de token');
+      alert('Please enter a token address');
       return;
     }
 
@@ -64,14 +64,14 @@ export function AdminPanel() {
       });
     } catch (error) {
       console.error('Error withdrawing fees:', error);
-      alert('Error al retirar fees');
+      alert('Error withdrawing fees');
     }
   };
 
   const handleSetFeePercentage = async () => {
     const percentage = parseInt(newFeePercentage);
     if (isNaN(percentage) || percentage < 0 || percentage > 1000) {
-      alert('Fee debe estar entre 0 y 1000 (0-10%)');
+      alert('Fee must be between 0 and 1000 (0-10%)');
       return;
     }
 
@@ -84,13 +84,13 @@ export function AdminPanel() {
       });
     } catch (error) {
       console.error('Error setting fee percentage:', error);
-      alert('Error al cambiar fee percentage');
+      alert('Error setting fee percentage');
     }
   };
 
   const handleSetFeeCollector = async () => {
     if (!newFeeCollector || !newFeeCollector.startsWith('0x')) {
-      alert('Ingresa una dirección válida');
+      alert('Enter a valid address');
       return;
     }
 
@@ -103,29 +103,29 @@ export function AdminPanel() {
       });
     } catch (error) {
       console.error('Error setting fee collector:', error);
-      alert('Error al cambiar fee collector');
+      alert('Error setting fee collector');
     }
   };
 
   const handleRenounceOwnership = async () => {
     const confirmed = window.confirm(
-      '⚠️ ADVERTENCIA CRÍTICA ⚠️\n\n' +
-      'Estás a punto de RENUNCIAR PERMANENTEMENTE a la propiedad del contrato.\n\n' +
-      'Después de esta acción:\n' +
-      '❌ NO podrás cambiar fees\n' +
-      '❌ NO podrás retirar comisiones\n' +
-      '❌ NO podrás pausar el contrato\n' +
-      '❌ Esta acción es IRREVERSIBLE\n\n' +
-      'Esto se hace para demostrar que el contrato es descentralizado y seguro.\n\n' +
-      '¿Estás ABSOLUTAMENTE SEGURO de que quieres continuar?'
+      '⚠️ CRITICAL WARNING ⚠️\n\n' +
+      'You are about to PERMANENTLY RENOUNCE ownership of the contract.\n\n' +
+      'After this action:\n' +
+      '❌ You CANNOT change fees\n' +
+      '❌ You CANNOT withdraw fees\n' +
+      '❌ You CANNOT pause the contract\n' +
+      '❌ This action is IRREVERSIBLE\n\n' +
+      'This is done to prove that the contract is decentralized and secure.\n\n' +
+      'Are you ABSOLUTELY SURE you want to continue?'
     );
 
     if (!confirmed) return;
 
     const doubleConfirm = window.confirm(
-      '🚨 ÚLTIMA CONFIRMACIÓN 🚨\n\n' +
-      'Escribe "RENUNCIO" en tu mente y haz clic en OK para confirmar.\n\n' +
-      'Esta es tu última oportunidad para cancelar.'
+      '🚨 FINAL CONFIRMATION 🚨\n\n' +
+      'Think "I RENOUNCE" in your mind and click OK to confirm.\n\n' +
+      'This is your last chance to cancel.'
     );
 
     if (!doubleConfirm) return;
@@ -138,11 +138,11 @@ export function AdminPanel() {
       });
     } catch (error) {
       console.error('Error renouncing ownership:', error);
-      alert('Error al renunciar a la propiedad');
+      alert('Error renouncing ownership');
     }
   };
 
-  // Si no es el owner, no mostrar nada
+  // If not owner, don't show anything
   if (!isOwner) {
     return null;
   }
@@ -151,15 +151,15 @@ export function AdminPanel() {
     <div className="w-full max-w-6xl mx-auto p-6 bg-gradient-to-br from-purple-50 to-blue-50 rounded-2xl shadow-xl">
       <div className="mb-6">
         <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-          🔐 Panel de Administración
+          🔐 Admin Panel
         </h2>
-        <p className="text-gray-600 mt-2">Gestiona las comisiones y configuración del contrato</p>
+        <p className="text-gray-600 mt-2">Manage fees and contract configuration</p>
       </div>
 
-      {/* Información actual */}
+      {/* Current Information */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <div className="bg-white p-4 rounded-xl shadow-md border border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-700 mb-2">💰 Fee Actual</h3>
+          <h3 className="text-lg font-semibold text-gray-700 mb-2">💰 Current Fee</h3>
           <p className="text-3xl font-bold text-purple-600">
             {currentFeePercentage ? `${Number(currentFeePercentage) / 100}%` : '...'}
           </p>
@@ -181,19 +181,19 @@ export function AdminPanel() {
             {contractOwner ? contractOwner.toString() : '...'}
           </p>
           {contractOwner?.toLowerCase() === '0x0000000000000000000000000000000000000000' && (
-            <p className="text-xs text-green-600 mt-1 font-semibold">✅ Descentralizado</p>
+            <p className="text-xs text-green-600 mt-1 font-semibold">✅ Decentralized</p>
           )}
         </div>
       </div>
 
-      {/* Retirar Fees */}
+      {/* Withdraw Fees */}
       <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
-        <h3 className="text-xl font-bold text-gray-800 mb-4">💸 Retirar Comisiones</h3>
+        <h3 className="text-xl font-bold text-gray-800 mb-4">💸 Withdraw Fees</h3>
 
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Dirección del Token
+              Token Address
             </label>
             <input
               type="text"
@@ -203,13 +203,13 @@ export function AdminPanel() {
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
             />
             <p className="text-xs text-gray-500 mt-1">
-              Ejemplos: WETH, USDC, o cualquier token ERC20
+              Examples: WETH, USDC, or any ERC20 token
             </p>
           </div>
 
           {tokenAddress && accumulatedFees !== undefined && (
             <div className="bg-gradient-to-r from-purple-50 to-blue-50 p-4 rounded-lg">
-              <p className="text-sm text-gray-600">Fees acumulados:</p>
+              <p className="text-sm text-gray-600">Accumulated fees:</p>
               <p className="text-2xl font-bold text-purple-600">
                 {formatEther(accumulatedFees as bigint)} tokens
               </p>
@@ -221,25 +221,25 @@ export function AdminPanel() {
             disabled={isPending || isConfirming || !tokenAddress}
             className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
           >
-            {isPending || isConfirming ? 'Procesando...' : 'Retirar Fees'}
+            {isPending || isConfirming ? 'Processing...' : 'Withdraw Fees'}
           </button>
 
           {isConfirmed && (
             <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-              <p className="text-green-800 font-semibold">✅ Fees retirados exitosamente!</p>
+              <p className="text-green-800 font-semibold">✅ Fees withdrawn successfully!</p>
             </div>
           )}
         </div>
       </div>
 
-      {/* Cambiar Fee Percentage */}
+      {/* Change Fee Percentage */}
       <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
-        <h3 className="text-xl font-bold text-gray-800 mb-4">⚙️ Cambiar Porcentaje de Fee</h3>
+        <h3 className="text-xl font-bold text-gray-800 mb-4">⚙️ Change Fee Percentage</h3>
 
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Nuevo Fee (basis points)
+              New Fee (basis points)
             </label>
             <input
               type="number"
@@ -251,7 +251,7 @@ export function AdminPanel() {
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
             />
             <p className="text-xs text-gray-500 mt-1">
-              100 basis points = 1%. Máximo: 1000 (10%)
+              100 basis points = 1%. Maximum: 1000 (10%)
             </p>
             {newFeePercentage && (
               <p className="text-sm text-purple-600 mt-2 font-semibold">
@@ -265,19 +265,19 @@ export function AdminPanel() {
             disabled={isPending || isConfirming || !newFeePercentage}
             className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
           >
-            {isPending || isConfirming ? 'Procesando...' : 'Cambiar Fee'}
+            {isPending || isConfirming ? 'Processing...' : 'Change Fee'}
           </button>
         </div>
       </div>
 
-      {/* Cambiar Fee Collector */}
+      {/* Change Fee Collector */}
       <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200">
-        <h3 className="text-xl font-bold text-gray-800 mb-4">👥 Cambiar Fee Collector</h3>
+        <h3 className="text-xl font-bold text-gray-800 mb-4">👥 Change Fee Collector</h3>
 
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Nueva Dirección
+              New Address
             </label>
             <input
               type="text"
@@ -293,29 +293,29 @@ export function AdminPanel() {
             disabled={isPending || isConfirming || !newFeeCollector}
             className="w-full bg-gradient-to-r from-orange-600 to-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-orange-700 hover:to-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
           >
-            {isPending || isConfirming ? 'Procesando...' : 'Cambiar Collector'}
+            {isPending || isConfirming ? 'Processing...' : 'Change Collector'}
           </button>
         </div>
       </div>
 
-      {/* Renunciar a la propiedad */}
+      {/* Renounce Ownership */}
       <div className="bg-red-50 border-2 border-red-300 p-6 rounded-xl shadow-md">
-        <h3 className="text-xl font-bold text-red-800 mb-4">⚠️ Renunciar a la Propiedad del Contrato</h3>
+        <h3 className="text-xl font-bold text-red-800 mb-4">⚠️ Renounce Contract Ownership</h3>
 
         <div className="bg-white p-4 rounded-lg mb-4">
           <p className="text-sm text-gray-700 mb-3">
-            <strong>¿Por qué hacer esto?</strong> Renunciar a la propiedad demuestra que el contrato es totalmente descentralizado
-            y que nadie puede modificar sus reglas o apropiarse de los fondos.
+            <strong>Why do this?</strong> Renouncing ownership proves that the contract is fully decentralized
+            and that no one can modify its rules or take ownership of the funds.
           </p>
           <p className="text-sm text-gray-700 mb-3">
-            <strong>Consecuencias (IRREVERSIBLES):</strong>
+            <strong>Consequences (IRREVERSIBLE):</strong>
           </p>
           <ul className="text-sm text-gray-700 space-y-1 ml-4 list-disc">
-            <li>No se podrán cambiar las comisiones nunca más</li>
-            <li>No se podrán retirar las comisiones acumuladas</li>
-            <li>No se podrá pausar/despausar el contrato</li>
-            <li>El contrato quedará completamente autónomo</li>
-            <li>Máxima confianza para los usuarios</li>
+            <li>Fees can never be changed again</li>
+            <li>Accumulated fees cannot be withdrawn</li>
+            <li>The contract cannot be paused/unpaused</li>
+            <li>The contract will be completely autonomous</li>
+            <li>Maximum trust for users</li>
           </ul>
         </div>
 
@@ -325,24 +325,24 @@ export function AdminPanel() {
           className="w-full bg-gradient-to-r from-red-600 to-red-800 text-white px-6 py-4 rounded-lg font-bold hover:from-red-700 hover:to-red-900 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-lg"
         >
           {contractOwner?.toLowerCase() === '0x0000000000000000000000000000000000000000'
-            ? '✅ Ya se ha renunciado a la propiedad'
+            ? '✅ Ownership already renounced'
             : isPending || isConfirming
-              ? 'Procesando...'
-              : '🚨 RENUNCIAR A LA PROPIEDAD DEL CONTRATO'}
+              ? 'Processing...'
+              : '🚨 RENOUNCE CONTRACT OWNERSHIP'}
         </button>
 
         {contractOwner?.toLowerCase() === '0x0000000000000000000000000000000000000000' && (
           <div className="mt-4 bg-green-50 border border-green-200 rounded-lg p-4">
             <p className="text-green-800 font-semibold text-center">
-              ✅ Este contrato ya no tiene dueño. Es completamente descentralizado y seguro.
+              ✅ This contract no longer has an owner. It is fully decentralized and secure.
             </p>
           </div>
         )}
       </div>
 
-      {/* Tokens comunes para consultar */}
+      {/* Common tokens for reference */}
       <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <p className="text-sm font-semibold text-blue-800 mb-2">📋 Direcciones de tokens comunes en Base:</p>
+        <p className="text-sm font-semibold text-blue-800 mb-2">📋 Common token addresses on Base:</p>
         <div className="space-y-1 text-xs font-mono text-blue-700">
           <p>WETH: 0x4200000000000000000000000000000000000006</p>
           <p>USDC: 0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913</p>
@@ -350,16 +350,16 @@ export function AdminPanel() {
         </div>
       </div>
 
-      {/* Enlace al contrato verificado */}
+      {/* Verified contract link */}
       <div className="mt-6 bg-green-50 border border-green-200 rounded-lg p-4">
-        <p className="text-sm font-semibold text-green-800 mb-2">🔍 Verificación de Seguridad:</p>
+        <p className="text-sm font-semibold text-green-800 mb-2">🔍 Security Verification:</p>
         <a
           href={`https://basescan.org/address/${VESTING_CONTRACT_ADDRESS}#code`}
           target="_blank"
           rel="noopener noreferrer"
           className="text-sm text-green-700 hover:text-green-900 underline font-mono"
         >
-          Ver contrato verificado en BaseScan →
+          View verified contract on BaseScan →
         </a>
       </div>
     </div>

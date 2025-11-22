@@ -45,19 +45,19 @@ export function parseCSVFile(file: File): Promise<ParsedVestingData> {
           for (let i = 0; i < data.length; i++) {
             const row = data[i];
 
-            // Validar campos requeridos
+            // Validate required fields
             if (!row.beneficiary || !row.token || !row.amount || !row.duration) {
               reject(new Error(`Row ${i + 1}: Missing required fields`));
               return;
             }
 
-            // Validar dirección del beneficiario
+            // Validate beneficiary address
             if (!/^0x[a-fA-F0-9]{40}$/.test(row.beneficiary)) {
               reject(new Error(`Row ${i + 1}: Invalid beneficiary address`));
               return;
             }
 
-            // Validar dirección del token
+            // Validate token address
             if (!/^0x[a-fA-F0-9]{40}$/.test(row.token)) {
               reject(new Error(`Row ${i + 1}: Invalid token address`));
               return;
@@ -67,16 +67,16 @@ export function parseCSVFile(file: File): Promise<ParsedVestingData> {
             tokens.push(row.token);
 
             try {
-              // Parse amount (asumiendo que está en la unidad base del token)
+              // Parse amount (assuming it's in the token's base unit)
               amounts.push(BigInt(row.amount));
 
-              // Parse start time (0 para empezar inmediatamente, o timestamp unix)
+              // Parse start time (0 to start immediately, or unix timestamp)
               startTimes.push(row.startTime ? BigInt(row.startTime) : 0n);
 
-              // Parse cliff duration (en segundos)
+              // Parse cliff duration (in seconds)
               cliffDurations.push(row.cliffDuration ? BigInt(row.cliffDuration) : 0n);
 
-              // Parse duration (en segundos)
+              // Parse duration (in seconds)
               durations.push(BigInt(row.duration));
 
               // Parse revocable (default false)
