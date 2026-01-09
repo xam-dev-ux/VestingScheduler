@@ -1,10 +1,32 @@
-import { useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
+import { useReadContract, useWriteContract, useWaitForTransactionReceipt, useAccount } from 'wagmi';
+import { useCapabilities } from 'wagmi/experimental';
 import { VESTING_SCHEDULER_ABI, VESTING_CONTRACT_ADDRESS } from '../contract';
+import { base } from 'wagmi/chains';
 
+/**
+ * Hook for interacting with the Vesting Contract
+ *
+ * Paymaster Support:
+ * When using Coinbase Smart Wallet with OnchainKit, transactions are automatically
+ * sponsored (gas-free) without additional configuration needed. The OnchainKitProvider
+ * with a valid API key handles the paymaster integration automatically.
+ */
 export function useVestingContract() {
+  const { address } = useAccount();
+
+  // Check if user has paymaster capabilities (Coinbase Smart Wallet)
+  const { data: capabilities } = useCapabilities({
+    account: address,
+  });
+
+  // Standard wagmi hooks for contract interactions
   const { writeContract, data: hash, isPending } = useWriteContract();
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
     useWaitForTransactionReceipt({ hash });
+
+  // Check if paymaster is available (Coinbase Smart Wallet users get free gas)
+  const paymasterService = capabilities?.[base.id]?.paymasterService;
+  const hasPaymaster = paymasterService?.supported === true;
 
   const createVesting = async (
     beneficiary: string,
@@ -67,6 +89,7 @@ export function useVestingContract() {
     isConfirming,
     isConfirmed,
     hash,
+    hasPaymaster, // Indicates if user has Coinbase Smart Wallet (gas-free transactions)
   };
 }
 

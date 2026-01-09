@@ -6,6 +6,7 @@ import { BatchVestingUpload } from '@/components/BatchVestingUpload';
 import { VestingDashboard } from '@/components/VestingDashboard';
 import { AdminPanel } from '@/components/AdminPanel';
 import { Onboarding, useOnboarding } from '@/components/Onboarding';
+import { BottomNav } from '@/components/BottomNav';
 import { useState } from 'react';
 import { useFeePercentage } from '@/lib/hooks/useVestingContract';
 
@@ -16,8 +17,14 @@ export default function Home() {
 
   const feePercent = feePercentage ? Number(feePercentage) / 100 : 0;
 
+  const handleNavigation = (section: 'create' | 'dashboard' | 'guide') => {
+    if (section === 'guide') {
+      resetOnboarding();
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/30 dark:from-gray-950 dark:via-blue-950/10 dark:to-purple-950/10">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/30 dark:from-gray-950 dark:via-blue-950/10 dark:to-purple-950/10 pb-20">
       {showOnboarding && (
         <Onboarding onComplete={() => setShowOnboarding(false)} />
       )}
@@ -39,9 +46,18 @@ export default function Home() {
               Token Vesting Made Simple
             </h2>
 
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-6">
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-4">
               Create customizable vesting schedules on Base Network with individual or batch creation
             </p>
+
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-full border border-green-200 dark:border-green-800 mb-6">
+              <svg className="w-5 h-5 text-green-600 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              </svg>
+              <span className="text-sm font-semibold text-green-800 dark:text-green-300">
+                FREE Gas with Coinbase Smart Wallet
+              </span>
+            </div>
 
             <div className="flex flex-col sm:flex-row gap-3 items-center">
               {feePercentage !== undefined && (
@@ -88,7 +104,7 @@ export default function Home() {
           </div>
 
           {/* Main Content */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12" data-section="create">
             {/* Creation Form - Takes 2 columns */}
             <div className="lg:col-span-2 space-y-6 animate-slideUp">
               <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-200/50 dark:border-gray-800/50 overflow-hidden">
@@ -325,7 +341,7 @@ export default function Home() {
           </div>
 
           {/* Dashboard Section */}
-          <div className="animate-slideUp" style={{ animationDelay: '0.2s' }}>
+          <div className="animate-slideUp" data-section="dashboard" style={{ animationDelay: '0.2s' }}>
             <VestingDashboard />
           </div>
         </div>
@@ -349,6 +365,9 @@ export default function Home() {
           </div>
         </div>
       </footer>
+
+      {/* Bottom Navigation */}
+      <BottomNav onNavigate={handleNavigation} />
     </div>
   );
 }

@@ -1,16 +1,23 @@
 'use client';
 
 import { OnchainKitProvider } from '@coinbase/onchainkit';
-import { RainbowKitProvider, getDefaultConfig } from '@rainbow-me/rainbowkit';
+import { RainbowKitProvider, getDefaultConfig, darkTheme, lightTheme } from '@rainbow-me/rainbowkit';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { base } from 'wagmi/chains';
 import { WagmiProvider } from 'wagmi';
 import { http } from 'wagmi';
+import { useState, useEffect } from 'react';
 
 import '@coinbase/onchainkit/styles.css';
 import '@rainbow-me/rainbowkit/styles.css';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false, // Prevent refetching on focus in mini-apps
+    },
+  },
+});
 
 // Custom RPC endpoint with OnchainKit API key for better rate limits
 const baseWithCustomRpc = {
@@ -39,6 +46,18 @@ const wagmiConfig = getDefaultConfig({
 });
 
 export function Providers({ children }: { children: React.ReactNode }) {
+  const [isInIframe, setIsInIframe] = useState(false);
+
+  useEffect(() => {
+    // Detect if running in iframe/mini-app context
+    try {
+      setIsInIframe(window.self !== window.top);
+    } catch {
+      // If we can't access window.top due to cross-origin, we're likely in an iframe
+      setIsInIframe(true);
+    }
+  }, []);
+
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
@@ -46,7 +65,15 @@ export function Providers({ children }: { children: React.ReactNode }) {
           apiKey={process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY}
           chain={baseWithCustomRpc as any}
         >
-          <RainbowKitProvider modalSize="compact" locale="en-US">
+          <RainbowKitProvider
+            modalSize="compact"
+            locale="en-US"
+            showRecentTransactions={!isInIframe} // Disable in mini-apps to prevent notification loops
+            appInfo={{
+              appName: 'Vesting Scheduler',
+              disclaimer: undefined, // Disable disclaimer in mini-apps
+            }}
+          >
             {children}
           </RainbowKitProvider>
         </OnchainKitProvider>

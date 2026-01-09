@@ -21,7 +21,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
       title: 'How It Works',
       description: 'Simple 3-step process to create vesting schedules',
       icon: '⚡',
-      content: 'Connect your wallet, configure vesting parameters (beneficiary, amount, duration), and create schedules individually or in bulk via CSV.'
+      content: 'Connect your wallet (use Coinbase Smart Wallet for FREE gas!), configure vesting parameters (beneficiary, amount, duration), and create schedules individually or in bulk via CSV.'
     },
     {
       title: 'Single Vesting',
@@ -43,9 +43,9 @@ export function Onboarding({ onComplete }: OnboardingProps) {
     },
     {
       title: 'Fully Decentralized',
-      description: '100% trustless and secure',
+      description: '100% trustless and secure with FREE gas',
       icon: '🔒',
-      content: 'Contract ownership has been renounced - no one can change fees, pause operations, or access your tokens. Verified on BaseScan for full transparency. Current fee: 0.5% (locked forever).'
+      content: 'Contract ownership has been renounced - no one can change fees, pause operations, or access your tokens. Verified on BaseScan for full transparency. Platform fee: 0.5% (locked forever). Use Coinbase Smart Wallet for sponsored transactions (no gas fees!).'
     }
   ];
 

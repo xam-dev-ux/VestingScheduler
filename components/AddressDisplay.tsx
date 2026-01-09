@@ -11,6 +11,29 @@ interface AddressDisplayProps {
   className?: string;
 }
 
+// Generate a friendly username from address (never show 0x addresses per Base guidelines)
+function generateUsername(address: string): string {
+  const adjectives = [
+    'Cosmic', 'Stellar', 'Nebula', 'Galactic', 'Quantum', 'Crypto', 'Digital', 'Virtual',
+    'Phantom', 'Shadow', 'Mystic', 'Thunder', 'Lightning', 'Phoenix', 'Dragon', 'Emerald'
+  ];
+
+  const nouns = [
+    'Whale', 'Shark', 'Tiger', 'Eagle', 'Wolf', 'Bear', 'Lion', 'Falcon',
+    'Viper', 'Cobra', 'Raven', 'Hawk', 'Lynx', 'Puma', 'Panther', 'Leopard'
+  ];
+
+  // Use address bytes to deterministically pick adjective and noun
+  const addrNum = parseInt(address.slice(2, 10), 16);
+  const adjIndex = addrNum % adjectives.length;
+  const nounIndex = Math.floor(addrNum / adjectives.length) % nouns.length;
+
+  // Add last 4 chars of address for uniqueness
+  const suffix = address.slice(-4).toUpperCase();
+
+  return `${adjectives[adjIndex]}${nouns[nounIndex]}${suffix}`;
+}
+
 export function AddressDisplay({
   address,
   showAvatar = false,
@@ -35,12 +58,8 @@ export function AddressDisplay({
     chainId: mainnet.id,
   });
 
-  const displayName = basename || ensName || address;
-  const shortAddress = showFull
-    ? address
-    : `${address.slice(0, 6)}...${address.slice(-4)}`;
-
-  const finalDisplay = (basename || ensName) ? displayName : shortAddress;
+  // Priority: Basename > ENS > Generated Username (NEVER show 0x address per Base guidelines)
+  const finalDisplay = basename || ensName || generateUsername(address);
 
   if (!showAvatar) {
     return (
@@ -55,7 +74,7 @@ export function AddressDisplay({
       {ensAvatar ? (
         <img
           src={ensAvatar}
-          alt={displayName}
+          alt={finalDisplay}
           className="w-6 h-6 rounded-full"
         />
       ) : (
