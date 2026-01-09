@@ -7,10 +7,10 @@
   "frame": {
     "version": "1",
     "name": "Vesting Scheduler",
-    "subtitle": "Token vesting made simple on Base",
-    "description": "Create customizable token vesting schedules on Base Network. 100% decentralized with verified contracts. Gas-free with Coinbase Smart Wallet.",
+    "subtitle": "Token vesting on Base",
+    "description": "Create token vesting schedules on Base Network. Decentralized with verified contracts. Gas-free with Coinbase Smart Wallet.",
     "primaryCategory": "finance",
-    "tags": ["vesting", "tokens", "defi", "base", "smart-contracts", "payroll", "team", "investors"],
+    "tags": ["vesting", "tokens", "defi", "base", "payroll"],
     "iconUrl": "https://baseapp4.vercel.app/icon.png",
     "splashImageUrl": "https://baseapp4.vercel.app/splash.png",
     "splashBackgroundColor": "#3b82f6",
