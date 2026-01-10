@@ -4,7 +4,7 @@
     "payload": "eyJkb21haW4iOiJiYXNlYXBwNC52ZXJjZWwuYXBwIn0",
     "signature": "WurAdrwyTxBAb8KaijHMHdaC2RMYx7hutrMojo0Zp4MD3q9lnUrVdkgBu0+BhcMvgOjX7U15KOn7Ky0iCCHqphs="
   },
-  "frame": {
+  "miniapp": {
     "version": "1",
     "name": "Vesting Scheduler",
     "subtitle": "Token vesting on Base",
