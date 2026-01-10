@@ -20,6 +20,12 @@
       "https://baseapp4.vercel.app/screenshot-3.png"
     ],
     "homeUrl": "https://baseapp4.vercel.app",
+    "heroImageUrl": "https://baseapp4.vercel.app/hero.png",
+    "tagline": "Vest your tokens",
+    "ogTitle": "Token vesting on Base",
+    "ogDescription": "Token vesting on Base",
+    "ogImageUrl": "https://baseapp4.vercel.app/embed.png",
+    "noindex": false,
     "webhookUrl": "https://baseapp4.vercel.app/api/webhook"
   },
   "baseBuilder": {
