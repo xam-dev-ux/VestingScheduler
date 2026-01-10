@@ -47,6 +47,7 @@ export const metadata: Metadata = {
   },
   other: {
     'fc:frame': 'vNext',
+    'base:app_id': '696227b8b8395f034ac2217a',
     'fc:frame:image': 'https://baseapp4.vercel.app/og-image.png',
     'fc:frame:button:1': 'Open App',
     'fc:frame:button:1:action': 'link',
