@@ -7,29 +7,24 @@
   "miniapp": {
     "version": "1",
     "name": "Vesting Scheduler",
-    "iconUrl": "https://baseapp4.vercel.app/icon.png",
     "homeUrl": "https://baseapp4.vercel.app",
-    "imageUrl": "https://baseapp4.vercel.app/embed.png",
-    "buttonTitle": "Launch Vesting",
-    "subtitle": "Token vesting on Base",
-    "description": "Create token vesting schedules on Base Network. Decentralized with verified contracts. Gas-free with Coinbase Smart Wallet.",
-    "primaryCategory": "finance",
-    "tags": ["vesting", "tokens", "defi", "base", "payroll"],
+    "iconUrl": "https://baseapp4.vercel.app/icon.png",
     "splashImageUrl": "https://baseapp4.vercel.app/splash.png",
     "splashBackgroundColor": "#3b82f6",
+    "subtitle": "Token vesting on Base",
+    "description": "Create token vesting schedules on Base Network. Decentralized with verified contracts. Gas-free with Coinbase Smart Wallet.",
     "screenshotUrls": [
       "https://baseapp4.vercel.app/screenshot-1.png",
       "https://baseapp4.vercel.app/screenshot-2.png",
       "https://baseapp4.vercel.app/screenshot-3.png"
     ],
+    "primaryCategory": "productivity",
+    "tags": ["vesting", "tokens", "defi", "base", "payroll"],
     "heroImageUrl": "https://baseapp4.vercel.app/hero.png",
     "tagline": "Vest your tokens",
     "ogTitle": "Token vesting on Base",
     "ogDescription": "Token vesting on Base",
     "ogImageUrl": "https://baseapp4.vercel.app/embed.png",
-    "webhookUrl": "https://baseapp4.vercel.app/api/webhook"
-  },
-  "baseBuilder": {
-    "ownerAddress": "0xB3e4Eb6dC22540128Ce2D5C13C213D9d9EAaFa38"
+    "noindex": false
   }
 }
