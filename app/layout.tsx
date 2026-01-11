@@ -9,25 +9,8 @@ export const metadata: Metadata = {
   title: "Vesting Scheduler - Token Vesting Made Simple on Base",
   description:
     "Create customizable token vesting schedules on Base Network. 100% decentralized with verified contracts. Gas-free with Coinbase Smart Wallet.",
-  keywords: [
-    "vesting",
-    "token vesting",
-    "Base",
-    "Base Network",
-    "DeFi",
-    "cryptocurrency",
-    "smart contracts",
-    "decentralized",
-    "verified contract",
-    "payroll",
-    "team tokens",
-    "investor vesting",
-  ],
-  authors: [{ name: "Vesting Scheduler" }],
-  creator: "Vesting Scheduler",
-  publisher: "Vesting Scheduler",
   metadataBase: new URL("https://baseapp4.vercel.app"),
-  manifest: "/manifest.json",
+
   icons: {
     icon: [
       { url: "/icon.png", sizes: "1024x1024", type: "image/png" },
@@ -37,10 +20,11 @@ export const metadata: Metadata = {
       { url: "/icon.png", sizes: "1024x1024", type: "image/png" },
     ],
   },
+
   openGraph: {
     title: "Vesting Scheduler - Token Vesting Made Simple on Base",
     description:
-      "Create customizable token vesting schedules on Base Network. 100% decentralized with verified contracts. Gas-free with Coinbase Smart Wallet.",
+      "Create customizable token vesting schedules on Base Network. Decentralized with verified contracts.",
     url: "https://baseapp4.vercel.app",
     siteName: "Vesting Scheduler",
     locale: "en_US",
@@ -50,10 +34,11 @@ export const metadata: Metadata = {
         url: "https://baseapp4.vercel.app/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Vesting Scheduler - Token Vesting on Base Network",
+        alt: "Vesting Scheduler on Base",
       },
     ],
   },
+
   twitter: {
     card: "summary_large_image",
     title: "Vesting Scheduler - Token Vesting on Base",
@@ -61,18 +46,39 @@ export const metadata: Metadata = {
       "Create customizable token vesting schedules. Gas-free with Coinbase Smart Wallet.",
     images: ["https://baseapp4.vercel.app/og-image.png"],
   },
+
   other: {
+    /**
+     * REQUIRED Base / Farcaster Mini App Embed
+     * This is what fixes:
+     * "Head section of your page misses embed meta tag"
+     */
+    "fc:miniapp": JSON.stringify({
+      version: "1",
+      imageUrl: "https://baseapp4.vercel.app/hero.png",
+      button: {
+        title: "Open App",
+        action: {
+          type: "launch_frame",
+          url: "https://baseapp4.vercel.app",
+          name: "Vesting Scheduler",
+          splashImageUrl: "https://baseapp4.vercel.app/splash.png",
+          splashBackgroundColor: "#3b82f6",
+        },
+      },
+    }),
+
+    /**
+     * Base App verification
+     */
     "base:app_id": "696227b8b8395f034ac2217a",
   },
+
   robots: {
     index: true,
     follow: true,
   },
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: "default",
-    title: "Vesting Scheduler",
-  },
+
   applicationName: "Vesting Scheduler",
   category: "finance",
 };
@@ -90,20 +96,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        {/* Base Mini App Embed (REQUIRED) */}
-        <meta
-          name="base:embed"
-          content='{
-            "version": "1",
-            "title": "Vesting Scheduler",
-            "description": "Create customizable token vesting schedules on Base Network. 100% decentralized with verified contracts. Gas-free with Coinbase Smart Wallet.",
-            "image": "https://baseapp4.vercel.app/og-image.png",
-            "url": "https://baseapp4.vercel.app"
-          }'
-        />
-      </head>
-
       <body className={inter.className}>
         <Providers>{children}</Providers>
       </body>
