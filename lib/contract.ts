@@ -240,4 +240,4 @@ export const VESTING_SCHEDULER_ABI = [
   }
 ] as const;
 
-export const VESTING_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_VESTING_CONTRACT_ADDRESS as `0x${string}`;
+export const VESTING_CONTRACT_ADDRESS = (process.env.NEXT_PUBLIC_VESTING_CONTRACT_ADDRESS?.trim() || '') as `0x${string}`;
