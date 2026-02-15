@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { parseUnits } from 'viem';
+import { useState, useEffect, useMemo } from 'react';
+import { parseUnits, formatUnits } from 'viem';
 import { useVestingContract } from '@/lib/hooks/useVestingContract';
+import { useTokenApproval } from '@/lib/hooks/useTokenApproval';
 import { useAccount } from 'wagmi';
 
 export function CreateVestingForm() {
@@ -13,7 +14,7 @@ export function CreateVestingForm() {
     beneficiary: '',
     token: '',
     amount: '',
-    decimals: '18',
+    decimals: '6',
     startTime: '',
     cliffDays: '',
     durationDays: '',
@@ -22,6 +23,28 @@ export function CreateVestingForm() {
 
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+
+  // Calculate amount for approval
+  const amountToApprove = useMemo(() => {
+    try {
+      if (!formData.amount || !formData.decimals) return 0n;
+      return parseUnits(formData.amount, parseInt(formData.decimals));
+    } catch {
+      return 0n;
+    }
+  }, [formData.amount, formData.decimals]);
+
+  // Token approval hook
+  const {
+    needsApproval,
+    hasEnoughBalance,
+    balance,
+    approve,
+    isPending: isApprovePending,
+    isConfirming: isApproveConfirming,
+    isConfirmed: isApprovalConfirmed,
+    hash: approvalHash,
+  } = useTokenApproval(formData.token, amountToApprove);
 
   // Watch for transaction confirmation
   useEffect(() => {
@@ -163,10 +186,13 @@ export function CreateVestingForm() {
               onChange={(e) =>
                 setFormData({ ...formData, decimals: e.target.value })
               }
-              placeholder="18"
+              placeholder="6"
               className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800"
               required
             />
+            <p className="text-xs text-gray-500 mt-1">
+              USDC: 6, Most tokens: 18
+            </p>
           </div>
         </div>
 
@@ -238,6 +264,51 @@ export function CreateVestingForm() {
           </label>
         </div>
 
+        {/* Token Approval Status */}
+        {formData.token && formData.amount && address && (
+          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md p-4">
+            <h3 className="text-sm font-semibold mb-2">Token Approval Status</h3>
+            <div className="space-y-1 text-sm">
+              {balance !== undefined && (
+                <p>
+                  <span className="font-medium">Your balance:</span>{' '}
+                  {formatUnits(balance, parseInt(formData.decimals))} tokens
+                </p>
+              )}
+              {!hasEnoughBalance && (
+                <p className="text-red-600 dark:text-red-400">
+                  ⚠️ Insufficient balance
+                </p>
+              )}
+              {needsApproval ? (
+                <p className="text-orange-600 dark:text-orange-400">
+                  🔒 Approval required before creating vesting
+                </p>
+              ) : amountToApprove > 0n ? (
+                <p className="text-green-600 dark:text-green-400">
+                  ✅ Token approval granted
+                </p>
+              ) : null}
+            </div>
+
+            {isApprovalConfirmed && (
+              <div className="mt-2 text-sm text-green-600 dark:text-green-400">
+                ✅ Approval confirmed!{' '}
+                {approvalHash && (
+                  <a
+                    href={`https://basescan.org/tx/${approvalHash}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline"
+                  >
+                    View tx
+                  </a>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
         {error && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
             {error}
@@ -260,13 +331,32 @@ export function CreateVestingForm() {
           </div>
         )}
 
+        {/* Approve Button */}
+        {needsApproval && formData.token && formData.amount && address && (
+          <button
+            type="button"
+            onClick={() => approve()}
+            disabled={isApprovePending || isApproveConfirming || !hasEnoughBalance}
+            className="w-full bg-orange-600 hover:bg-orange-700 text-white font-medium py-2 px-4 rounded-md disabled:bg-gray-400 disabled:cursor-not-allowed"
+          >
+            {isApprovePending
+              ? 'Awaiting Wallet Approval...'
+              : isApproveConfirming
+              ? 'Confirming Approval...'
+              : `Approve ${formData.amount} Tokens`}
+          </button>
+        )}
+
+        {/* Create Vesting Button */}
         <button
           type="submit"
-          disabled={isPending || isConfirming || !address}
+          disabled={isPending || isConfirming || !address || needsApproval}
           className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md disabled:bg-gray-400 disabled:cursor-not-allowed"
         >
           {!address
             ? 'Connect Wallet'
+            : needsApproval
+            ? 'Approve Tokens First'
             : isPending
             ? 'Awaiting Wallet Approval...'
             : isConfirming
