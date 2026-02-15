@@ -1,12 +1,13 @@
 'use client';
 
 import { OnchainKitProvider } from '@coinbase/onchainkit';
-import { RainbowKitProvider, getDefaultConfig, darkTheme, lightTheme } from '@rainbow-me/rainbowkit';
+import { RainbowKitProvider, getDefaultWallets, darkTheme, lightTheme } from '@rainbow-me/rainbowkit';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { base } from 'wagmi/chains';
-import { WagmiProvider } from 'wagmi';
+import { WagmiProvider, createConfig } from 'wagmi';
 import { http } from 'wagmi';
 import { useState, useEffect } from 'react';
+import { Attribution } from 'ox/erc8021';
 
 import '@coinbase/onchainkit/styles.css';
 import '@rainbow-me/rainbowkit/styles.css';
@@ -38,10 +39,24 @@ const baseWithCustomRpc = {
   },
 } as const;
 
-const wagmiConfig = getDefaultConfig({
+// Builder Code for attribution - get from base.dev > Settings > Builder Code
+const DATA_SUFFIX = Attribution.toDataSuffix({
+  codes: ['bc_cqc42brh'],
+});
+
+// Get default wallet connectors
+const { connectors } = getDefaultWallets({
   appName: 'Vesting Scheduler',
   projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || '',
+});
+
+const wagmiConfig = createConfig({
   chains: [baseWithCustomRpc as any],
+  connectors,
+  transports: {
+    [baseWithCustomRpc.id]: http(),
+  },
+  dataSuffix: DATA_SUFFIX,
   ssr: true,
 });
 
