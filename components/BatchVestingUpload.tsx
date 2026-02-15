@@ -1,9 +1,11 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { useVestingContract } from '@/lib/hooks/useVestingContract';
+import { useTokenApproval } from '@/lib/hooks/useTokenApproval';
 import { parseCSVFile, downloadCSVTemplate } from '@/lib/utils/csvParser';
 import { useAccount } from 'wagmi';
+import { formatUnits } from 'viem';
 
 export function BatchVestingUpload() {
   const { address } = useAccount();
@@ -16,6 +18,44 @@ export function BatchVestingUpload() {
   const [success, setSuccess] = useState('');
   const [previewData, setPreviewData] = useState<any>(null);
   const [batchCount, setBatchCount] = useState(0);
+
+  // Calculate total amount needed per token
+  const tokenAmounts = useMemo(() => {
+    if (!previewData) return {};
+
+    const amounts: { [token: string]: bigint } = {};
+    previewData.tokens.forEach((token: string, idx: number) => {
+      const amount = previewData.amounts[idx];
+      if (amounts[token]) {
+        amounts[token] += amount;
+      } else {
+        amounts[token] = amount;
+      }
+    });
+
+    return amounts;
+  }, [previewData]);
+
+  // Get the first (and typically only) token for approval
+  const primaryToken = useMemo(() => {
+    return Object.keys(tokenAmounts)[0] || '';
+  }, [tokenAmounts]);
+
+  const primaryTokenAmount = useMemo(() => {
+    return tokenAmounts[primaryToken] || 0n;
+  }, [tokenAmounts, primaryToken]);
+
+  // Token approval hook for the primary token
+  const {
+    needsApproval,
+    hasEnoughBalance,
+    balance,
+    approve,
+    isPending: isApprovePending,
+    isConfirming: isApproveConfirming,
+    isConfirmed: isApprovalConfirmed,
+    hash: approvalHash,
+  } = useTokenApproval(primaryToken, primaryTokenAmount);
 
   // Watch for transaction confirmation
   useEffect(() => {
@@ -149,6 +189,59 @@ export function BatchVestingUpload() {
           </div>
         )}
 
+        {/* Token Approval Status */}
+        {previewData && address && primaryToken && (
+          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md p-4">
+            <h3 className="text-sm font-semibold mb-2">Token Approval Status</h3>
+            <div className="space-y-1 text-sm">
+              <p>
+                <span className="font-medium">Token:</span>{' '}
+                <span className="font-mono text-xs">{primaryToken}</span>
+              </p>
+              <p>
+                <span className="font-medium">Total amount needed:</span>{' '}
+                {primaryTokenAmount.toString()} units
+              </p>
+              {balance !== undefined && (
+                <p>
+                  <span className="font-medium">Your balance:</span>{' '}
+                  {balance.toString()} units
+                </p>
+              )}
+              {!hasEnoughBalance && (
+                <p className="text-red-600 dark:text-red-400">
+                  ⚠️ Insufficient balance for batch vesting
+                </p>
+              )}
+              {needsApproval ? (
+                <p className="text-orange-600 dark:text-orange-400">
+                  🔒 Approval required before creating batch vesting
+                </p>
+              ) : primaryTokenAmount > 0n ? (
+                <p className="text-green-600 dark:text-green-400">
+                  ✅ Token approval granted
+                </p>
+              ) : null}
+            </div>
+
+            {isApprovalConfirmed && (
+              <div className="mt-2 text-sm text-green-600 dark:text-green-400">
+                ✅ Approval confirmed!{' '}
+                {approvalHash && (
+                  <a
+                    href={`https://basescan.org/tx/${approvalHash}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline"
+                  >
+                    View tx
+                  </a>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
         {error && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
             {error}
@@ -171,13 +264,32 @@ export function BatchVestingUpload() {
           </div>
         )}
 
+        {/* Approve Button */}
+        {needsApproval && previewData && address && primaryToken && (
+          <button
+            type="button"
+            onClick={() => approve()}
+            disabled={isApprovePending || isApproveConfirming || !hasEnoughBalance}
+            className="w-full bg-orange-600 hover:bg-orange-700 text-white font-medium py-2 px-4 rounded-md disabled:bg-gray-400 disabled:cursor-not-allowed"
+          >
+            {isApprovePending
+              ? 'Awaiting Wallet Approval...'
+              : isApproveConfirming
+              ? 'Confirming Approval...'
+              : `Approve ${primaryTokenAmount.toString()} Token Units`}
+          </button>
+        )}
+
+        {/* Create Batch Vesting Button */}
         <button
           type="submit"
-          disabled={!previewData || isPending || isConfirming || !address}
+          disabled={!previewData || isPending || isConfirming || !address || needsApproval}
           className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md disabled:bg-gray-400 disabled:cursor-not-allowed"
         >
           {!address
             ? 'Connect Wallet'
+            : needsApproval
+            ? 'Approve Tokens First'
             : isPending
             ? 'Awaiting Wallet Approval...'
             : isConfirming
