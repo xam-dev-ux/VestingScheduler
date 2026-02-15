@@ -1,13 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { parseUnits } from 'viem';
 import { useVestingContract } from '@/lib/hooks/useVestingContract';
 import { useAccount } from 'wagmi';
 
 export function CreateVestingForm() {
   const { address } = useAccount();
-  const { createVesting, isPending, isConfirming, isConfirmed } = useVestingContract();
+  const { createVesting, isPending, isConfirming, isConfirmed, hash } = useVestingContract();
 
   const [formData, setFormData] = useState({
     beneficiary: '',
@@ -22,6 +22,23 @@ export function CreateVestingForm() {
 
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+
+  // Watch for transaction confirmation
+  useEffect(() => {
+    if (isConfirmed) {
+      setSuccess('Vesting created successfully!');
+      setFormData({
+        beneficiary: '',
+        token: '',
+        amount: '',
+        decimals: '18',
+        startTime: '',
+        cliffDays: '',
+        durationDays: '',
+        revocable: false,
+      });
+    }
+  }, [isConfirmed]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -65,17 +82,7 @@ export function CreateVestingForm() {
         formData.revocable
       );
 
-      setSuccess('Vesting created successfully!');
-      setFormData({
-        beneficiary: '',
-        token: '',
-        amount: '',
-        decimals: '18',
-        startTime: '',
-        cliffDays: '',
-        durationDays: '',
-        revocable: false,
-      });
+      // Success message will be shown when transaction is confirmed (via isConfirmed state)
     } catch (err: any) {
       setError(err.message || 'Failed to create vesting');
     }
@@ -225,7 +232,17 @@ export function CreateVestingForm() {
 
         {success && (
           <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
-            {success}
+            <div>{success}</div>
+            {hash && (
+              <a
+                href={`https://basescan.org/tx/${hash}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:underline text-sm"
+              >
+                View on BaseScan →
+              </a>
+            )}
           </div>
         )}
 
@@ -234,8 +251,12 @@ export function CreateVestingForm() {
           disabled={isPending || isConfirming || !address}
           className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md disabled:bg-gray-400 disabled:cursor-not-allowed"
         >
-          {isPending || isConfirming
-            ? 'Creating...'
+          {!address
+            ? 'Connect Wallet'
+            : isPending
+            ? 'Awaiting Wallet Approval...'
+            : isConfirming
+            ? 'Confirming Transaction...'
             : isConfirmed
             ? 'Created!'
             : 'Create Vesting'}

@@ -1,13 +1,13 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useVestingContract } from '@/lib/hooks/useVestingContract';
 import { parseCSVFile, downloadCSVTemplate } from '@/lib/utils/csvParser';
 import { useAccount } from 'wagmi';
 
 export function BatchVestingUpload() {
   const { address } = useAccount();
-  const { createBatchVesting, isPending, isConfirming, isConfirmed } =
+  const { createBatchVesting, isPending, isConfirming, isConfirmed, hash } =
     useVestingContract();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -15,6 +15,20 @@ export function BatchVestingUpload() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [previewData, setPreviewData] = useState<any>(null);
+  const [batchCount, setBatchCount] = useState(0);
+
+  // Watch for transaction confirmation
+  useEffect(() => {
+    if (isConfirmed && batchCount > 0) {
+      setSuccess(`Successfully created ${batchCount} vesting schedules!`);
+      setFile(null);
+      setPreviewData(null);
+      setBatchCount(0);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
+  }, [isConfirmed, batchCount]);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -50,6 +64,7 @@ export function BatchVestingUpload() {
     }
 
     try {
+      setBatchCount(previewData.beneficiaries.length);
       await createBatchVesting(
         previewData.beneficiaries,
         previewData.tokens,
@@ -60,16 +75,10 @@ export function BatchVestingUpload() {
         previewData.revocables
       );
 
-      setSuccess(
-        `Successfully created ${previewData.beneficiaries.length} vesting schedules!`
-      );
-      setFile(null);
-      setPreviewData(null);
-      if (fileInputRef.current) {
-        fileInputRef.current.value = '';
-      }
+      // Success message will be shown when transaction is confirmed (via isConfirmed state)
     } catch (err: any) {
       setError(err.message || 'Failed to create batch vesting');
+      setBatchCount(0);
     }
   };
 
@@ -148,7 +157,17 @@ export function BatchVestingUpload() {
 
         {success && (
           <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
-            {success}
+            <div>{success}</div>
+            {hash && (
+              <a
+                href={`https://basescan.org/tx/${hash}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:underline text-sm"
+              >
+                View on BaseScan →
+              </a>
+            )}
           </div>
         )}
 
@@ -157,8 +176,12 @@ export function BatchVestingUpload() {
           disabled={!previewData || isPending || isConfirming || !address}
           className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md disabled:bg-gray-400 disabled:cursor-not-allowed"
         >
-          {isPending || isConfirming
-            ? 'Creating Batch...'
+          {!address
+            ? 'Connect Wallet'
+            : isPending
+            ? 'Awaiting Wallet Approval...'
+            : isConfirming
+            ? 'Confirming Transaction...'
             : isConfirmed
             ? 'Created!'
             : `Create ${previewData?.beneficiaries.length || 0} Vestings`}
