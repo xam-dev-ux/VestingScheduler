@@ -37,6 +37,17 @@ export function useVestingContract() {
     duration: bigint,
     revocable: boolean
   ) => {
+    console.log('[useVestingContract] createVesting called with:', {
+      beneficiary,
+      token,
+      totalAmount: totalAmount.toString(),
+      startTime: startTime.toString(),
+      cliffDuration: cliffDuration.toString(),
+      duration: duration.toString(),
+      revocable,
+      contractAddress: VESTING_CONTRACT_ADDRESS
+    });
+
     return writeContract({
       address: VESTING_CONTRACT_ADDRESS,
       abi: VESTING_SCHEDULER_ABI,

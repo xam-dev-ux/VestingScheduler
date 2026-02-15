@@ -45,6 +45,10 @@ export function CreateVestingForm() {
     setError('');
     setSuccess('');
 
+    console.log('[CreateVesting] Form submitted');
+    console.log('[CreateVesting] Wallet address:', address);
+    console.log('[CreateVesting] Form data:', formData);
+
     try {
       if (!address) {
         throw new Error('Please connect your wallet');
@@ -65,6 +69,13 @@ export function CreateVestingForm() {
       const cliffDuration = BigInt(parseInt(formData.cliffDays) * 86400);
       const duration = BigInt(parseInt(formData.durationDays) * 86400);
 
+      console.log('[CreateVesting] Parsed values:', {
+        amount: amount.toString(),
+        startTime: startTime.toString(),
+        cliffDuration: cliffDuration.toString(),
+        duration: duration.toString()
+      });
+
       if (duration < 86400n) {
         throw new Error('Duration must be at least 1 day');
       }
@@ -72,6 +83,7 @@ export function CreateVestingForm() {
         throw new Error('Cliff duration cannot exceed total duration');
       }
 
+      console.log('[CreateVesting] Calling createVesting...');
       await createVesting(
         formData.beneficiary,
         formData.token,
@@ -82,8 +94,10 @@ export function CreateVestingForm() {
         formData.revocable
       );
 
+      console.log('[CreateVesting] createVesting call completed');
       // Success message will be shown when transaction is confirmed (via isConfirmed state)
     } catch (err: any) {
+      console.error('[CreateVesting] Error:', err);
       setError(err.message || 'Failed to create vesting');
     }
   };
